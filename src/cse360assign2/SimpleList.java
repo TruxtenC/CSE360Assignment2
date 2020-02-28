@@ -7,6 +7,7 @@ package cse360assign2;
 public class SimpleList {
     private int[] list;
     private int count;
+    private int capacity;
 
     /*
      * Constructor for SimpleList
@@ -14,45 +15,49 @@ public class SimpleList {
     SimpleList(){
         list = new int[10];
         count = 0;
+        capacity = 10;
     }
     
     /*
      * Adds passed value at the start of the list. Pushes current arguments back by one, knocking off the last one
-     * if the list is full. Increments count on successful add up to 10
+     * if the list is full. Increments count on successful add. Increases list capacity by 50%, rounding down, if list is full
      * @param 	in 	the integer to be added to the list
      */
     public void add(int in){
+        if(count == capacity){
+            //increases list capacity by 50%, rounding down, if list is full
+            capacity = capacity + capacity/2;
+            int[] newlist = new int[capacity];
+            for(int i = 0; i < list.length; i++){
+                newlist[i] = list[i];
+            }
+            list = newlist;
+        }
         if(count == 0){
             list[0] = in;
-        }else{
+        }else {
             int previous = list[0], temp;
             list[0] = in;
-            for(int i = 1; i <= count && i < 10; i++){
-                if(i <= 9) {
+            for(int i = 1; i <= count && i < capacity; i++){
                     temp = list[i];
                     list[i] = previous;
                     previous = temp;
-                }
             }
         }
-        if(count != 10){
-            count++;
-        }
-
+        count++;
     }
-
     /*
-     * Finds first instance of passed value and removes it from the list. Shifts everything after removed value back 
-     * one index. Decrements count on successful removal.
+     * Finds first instance of passed value and removes it from the list. Shifts everything after removed value back
+     * one index. Decrements count on successful removal. Decreases list capactiy by 25% if list is <= 25% empty
      * @param 	in 	the integer to be removed from the list
      */
     public void remove(int in){
         boolean found = false;
         for(int i = 0; i < count; i++){
-            if(i == 9){
-                if(list[9] == in){
+            if(i == capacity - 1 ){
+                if(list[capacity - 1] == in){
                     found = true;
-                    list[9] = 0;
+                    list[capacity - 1] = 0;
                 }
             }else if(found){
                 list[i] = list[i + 1];
@@ -63,8 +68,18 @@ public class SimpleList {
         }
         if(found){
             count--;
+            //decreases list capactiy by 25% if list is <= 25% empty
+            if ( (capacity - count) >= capacity/4){
+                capacity = capacity - capacity/4;
+                int[] newlist = new int[capacity];
+                for(int i = 0; i < capacity; i++){
+                    newlist[i] = list[i];
+                }
+                list = newlist;
+            }
         }
     }
+
 
     /*
      * Returns the number of items in the list
