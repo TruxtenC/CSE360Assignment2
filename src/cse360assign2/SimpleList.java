@@ -17,7 +17,7 @@ public class SimpleList {
         count = 0;
         capacity = 10;
     }
-    
+
     /*
      * Adds passed value at the start of the list. Pushes current arguments back by one, knocking off the last one
      * if the list is full. Increments count on successful add. Increases list capacity by 50%, rounding down, if list is full
@@ -46,6 +46,7 @@ public class SimpleList {
         }
         count++;
     }
+
     /*
      * Finds first instance of passed value and removes it from the list. Shifts everything after removed value back
      * one index. Decrements count on successful removal. Decreases list capactiy by 25% if list is <= 25% empty
@@ -80,7 +81,6 @@ public class SimpleList {
         }
     }
 
-
     /*
      * Returns the number of items in the list
      * @return 		A integer showing the amount of items in the list
@@ -97,7 +97,7 @@ public class SimpleList {
         String answer = "";
         int index;
         if (count != 0) {
-        	for(index = 0; index < count - 1; index++){
+            for(index = 0; index < count - 1; index++){
                 answer += list[index];
                 answer += " ";
             }
@@ -126,13 +126,48 @@ public class SimpleList {
         }
         return index;
     }
-    
+
     /*
      * Method created to help with JUnit Testing. Takes in value and returns the value of the list at that index
      * @param index	the index to be returned
-     * @return		the integer at the index specified in list 
+     * @return		the integer at the index specified in list
      */
-   public int getValue(int index) {
-	   return list[index];
-   }
+    public int getValue(int index) {
+        return list[index];
+    }
+
+    /*
+     * Method returns current list capacity
+     * @return		current list capacity
+     */
+    public int size(){
+        return capacity;
+    }
+    
+    /*
+     * Adds param to end of list. Increases list capacity as in add()
+     * @param 		the integer to be added
+     */
+    void append(int in){
+        if(count == capacity){
+            //increases list capacity by 50%, rounding down, if list is full
+            capacity = capacity + capacity/2;
+            int[] newlist = new int[capacity];
+            for(int i = 0; i < list.length; i++){
+                newlist[i] = list[i];
+            }
+            list = newlist;
+        }
+        list[count] = in;
+        count++;
+    }
+
+    /*
+     * Method returns first element in list
+     * @return		first element in list
+     */
+    public  int first(){
+        return list[0];
+    }
+
 }
